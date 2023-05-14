@@ -1,4 +1,4 @@
-const MoviesDetails = () => {
+const MovieDetails = () => {
   return (
     <div>
       <h1 classMame="page-title">MoviesDetails</h1>
@@ -6,4 +6,4 @@ const MoviesDetails = () => {
   );
 };
 
-export default MoviesDetails;
+export default MovieDetails;

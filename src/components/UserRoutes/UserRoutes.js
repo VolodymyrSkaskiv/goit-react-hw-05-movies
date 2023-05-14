@@ -1,8 +1,12 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { lazy } from 'react';
 
-import HomePage from '../../pages/HomePage/HomePage';
-import MoviesPage from '../../pages/MoviesPage/MoviesPage';
-import MovieDetails from '../../pages/MoviesDetails/MoviesDetails';
+const SharedLayout = lazy(() => import('../SharedLayout/SharedLayout')); // додаємо лейаут
+const HomePage = lazy(() => import('../../pages/HomePage'));
+const MoviesPage = lazy(() => import('../../pages/MoviesPage'));
+const MovieDetails = lazy(() => import('../../pages/MovieDetails'));
+const Cast = lazy(() => import('../Cast/Cast'));
+const Reviews = lazy(() => import('../Reviews/Reviews'));
 
 const UserRoutes = () => {
   return (
@@ -17,6 +21,7 @@ const UserRoutes = () => {
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
+      s
     </Routes>
   );
 };
