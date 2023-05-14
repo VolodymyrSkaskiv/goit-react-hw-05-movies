@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/847.2e9104a8.chunk.js","mappings":"0JAQA,UARqB,WACnB,OACE,0BACE,eAAIA,UAAU,aAAd,4BAGL,C","sources":["pages/MovieDetails.js"],"sourcesContent":["const MovieDetails = () => {\n  return (\n    <div>\n      <h1 classMame=\"page-title\">MoviesDetails</h1>\n    </div>\n  );\n};\n\nexport default MovieDetails;\n"],"names":["classMame"],"sourceRoot":""}
