@@ -7,11 +7,12 @@ const SearchMovies = ({ onSubmit }) => {
   const handleSubmit = evt => {
     evt.preventDefault(); // відміняємо стандартну поведінку браузера
 
-    const query = evt.target.elements.query.value; // додаємо доступ до значення поля пошуку
+    const query = evt.target.elements.query.value.trim(); // додаємо доступ до значення поля пошуку
 
     // додаємо перевірку на наявність значення в полі пошуку
-    if (!query) {
+    if (!query || query === '') {
       toast.error('Please enter something');
+      evt.target.reset();
       return;
     }
 

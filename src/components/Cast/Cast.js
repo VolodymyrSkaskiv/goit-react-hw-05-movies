@@ -10,18 +10,22 @@ import {
   NoCastText,
   Wrapper,
 } from './Cast.styled';
+import { LoadingIndicator } from 'components/SharedLayout/LoadingDots';
 
 const Cast = () => {
   const { movieId } = useParams(); // додаємо параметр movieId
   const [cast, setCast] = useState([]);
-
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchCast = async () => {
       try {
         const { cast } = await fetchMovieCast(movieId);
         setCast(cast);
       } catch (error) {
-        console.log(error);
+        setError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -32,7 +36,7 @@ const Cast = () => {
     <Wrapper>
       <CastHeader>Cast</CastHeader> {/* додаємо заголовок */}
       {/* додаємо перевірку на наявність акторів */}
-      {cast.length ? (
+      {!error && (
         <CastList>
           {cast.map(actor => (
             <CastListItem className="cast-card" key={actor.id}>
@@ -57,11 +61,11 @@ const Cast = () => {
             </CastListItem>
           ))}
         </CastList>
-      ) : (
-        <NoCastText>
-          We don't have any information about the cast yet.
-        </NoCastText>
       )}
+      <NoCastText>
+        {error && <h2>We don't have any information about the cast yet.</h2>}
+      </NoCastText>
+      {isLoading && <LoadingIndicator />}
     </Wrapper>
   );
 };
