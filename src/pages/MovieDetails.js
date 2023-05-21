@@ -10,7 +10,7 @@ import { LoadingIndicator } from 'components/SharedLayout/LoadingDots';
 const MovieDelails = () => {
   const { movieId } = useParams();
   const location = useLocation();
-  const [selectedMovie, setSelectedMovie] = useState({});
+  const [selectedMovie, setSelectedMovie] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -43,7 +43,7 @@ const MovieDelails = () => {
             Go back
           </Button>
         </Link>
-        {!error && <MovieCard movie={selectedMovie} />}
+        {selectedMovie && <MovieCard movie={selectedMovie} />}
         {isLoading && <LoadingIndicator />}
         {error && <h2>Sorry we didn't find this page</h2>}
 

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { fetchTrendMovies } from '../services/api';
 import MovieList from 'components/MovieList/MovieList';
 import { LoadingIndicator } from 'components/SharedLayout/LoadingDots';
+import { SectionTitle } from 'components/MovieList/MovieList.styled';
 
 const HomePage = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -26,7 +27,9 @@ const HomePage = () => {
 
   return (
     <>
-      {!error && <MovieList trendingMovies={trendingMovies} />}
+      <SectionTitle>Trending today</SectionTitle>
+
+      {trendingMovies.length > 0 && <MovieList movies={trendingMovies} />}
       {isLoading && <LoadingIndicator />}
       {error && <h2>Sorry we didn't find this page</h2>}
     </>

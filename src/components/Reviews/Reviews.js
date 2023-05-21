@@ -10,19 +10,26 @@ import {
   ReviewListItem,
   Wrapper,
 } from './Reviews.styled'; // додаємо стилі
+import { LoadingIndicator } from 'components/SharedLayout/LoadingDots';
 
 const Reviews = () => {
   const { movieId } = useParams(); // додаємо доступ до параметрів поточного URL
-  const [reviews, setReviews] = useState([]); // додаємо стейт для відгуків
+  const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  // додаємо стейт для відгуків
 
   // додаємо запит на відгуки
   useEffect(() => {
     const fetchReviews = async () => {
       try {
+        setIsLoading(true);
         const { results } = await fetchMovieReviews(movieId);
         setReviews(results);
       } catch (error) {
-        console.log(error);
+        setError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -34,7 +41,7 @@ const Reviews = () => {
       <ReviewHeader>Reviews</ReviewHeader>
 
       {/* додаємо перевірку на наявність відгуків */}
-      {reviews.length ? (
+      {reviews.length > 0 ? (
         <ReviewList className="reviews-container">
           {reviews.map(review => (
             <ReviewListItem className="review-card" key={review.id}>
@@ -48,6 +55,8 @@ const Reviews = () => {
           We don't have any reviews for this movie yet.
         </NoReviewsText>
       )}
+      {isLoading && <LoadingIndicator />}
+      {error && <h2>Sorry we didn't find this page</h2>}
     </Wrapper>
   );
 };

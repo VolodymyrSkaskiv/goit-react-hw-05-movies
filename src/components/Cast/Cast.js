@@ -16,10 +16,11 @@ const Cast = () => {
   const { movieId } = useParams(); // додаємо параметр movieId
   const [cast, setCast] = useState([]);
   const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchCast = async () => {
       try {
+        setIsLoading(true);
         const { cast } = await fetchMovieCast(movieId);
         setCast(cast);
       } catch (error) {
@@ -36,22 +37,20 @@ const Cast = () => {
     <Wrapper>
       <CastHeader>Cast</CastHeader> {/* додаємо заголовок */}
       {/* додаємо перевірку на наявність акторів */}
-      {!error && (
+      {cast.length && (
         <CastList>
           {cast.map(actor => (
             <CastListItem className="cast-card" key={actor.id}>
               {/* додаємо перевірку на наявність фото */}
-              {actor.profile_path ? (
-                <img
-                  src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                  alt={`${actor.name} profile`}
-                />
-              ) : (
-                <img
-                  src={`https://via.placeholder.com/200x300?text=No+Image`}
-                  alt={`${actor.name} profile`}
-                />
-              )}
+
+              <img
+                src={
+                  actor.profile_path
+                    ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
+                    : `https://via.placeholder.com/200x300?text=No+Image`
+                }
+                alt={`${actor.name} profile`}
+              />
 
               {/* додаємо інформацію про актора */}
               <CastInfo>

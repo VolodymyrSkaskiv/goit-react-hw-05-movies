@@ -13,11 +13,17 @@ import {
   MovieName,
   StyledLink,
 } from './MovieCard.styled'; // додаємо стилі
-import { LoadingIndicator } from 'components/SharedLayout/LoadingDots'; // додаємо індикатор завантаження
 
 const MovieCard = ({ movie }) => {
-  const { title, release_date, poster_path, vote_average, overview, genres } =
-    movie;
+  const {
+    title,
+    original_title,
+    release_date,
+    poster_path,
+    vote_average,
+    overview,
+    genres,
+  } = movie;
   const location = useLocation(); // додаємо доступ до параметрів поточного URL
   const releaseDate = new Date(release_date);
 
@@ -37,18 +43,14 @@ const MovieCard = ({ movie }) => {
     : 'Not rated yet';
 
   // додаємо перевірку на наявність заголовку
-  if (!title) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <>
       <MovieCardContainer>
-        <Img src={posterUrl} alt={`${title} poster`} />
+        <Img src={posterUrl} alt={`${title || original_title} poster`} />
 
         <MovieInfo>
           <MovieName>
-            {title ?? 'Unknown'} ({releaseYear})
+            {title || original_title} ({releaseYear})
           </MovieName>
           <MovieInfoText>User Score: {userScore}</MovieInfoText>
           <MovieInfoText>
@@ -94,9 +96,10 @@ const MovieCard = ({ movie }) => {
 
 MovieCard.propTypes = {
   movie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    original_title: PropTypes.string,
     release_date: PropTypes.string.isRequired,
-    poster_path: PropTypes.string.isRequired,
+    poster_path: PropTypes.string,
     vote_average: PropTypes.number,
     overview: PropTypes.string,
     genres: PropTypes.arrayOf(

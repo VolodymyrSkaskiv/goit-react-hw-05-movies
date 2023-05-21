@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useLocation } from 'react-router-dom'; // додаємо хук для роботи з параметрами URL
+import { useSearchParams } from 'react-router-dom'; // додаємо хук для роботи з параметрами URL
 import { toast } from 'react-hot-toast'; // імпортуємо плагін для сповіщень
 import { fetchMovieByName } from '../services/api';
 import SearchMovies from '../components/SearchMovies/SearchMovies';
 import { LoadingIndicator } from 'components/SharedLayout/LoadingDots';
+import MovieList from 'components/MovieList/MovieList';
 
 import {
-  List,
-  ListItem,
   SectionTitle,
-  StyledLink,
   StyledSection,
 } from '../components/MovieList/MovieList.styled'; // імпортуємо стилі
 
 const MoviesPage = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
 
   // додаємо запит на фільм
   useEffect(() => {
@@ -63,21 +60,7 @@ const MoviesPage = () => {
         <SectionTitle>Movies Page</SectionTitle>
         <SearchMovies onSubmit={handleSubmit} />
         {/* додаємо компонент для пошуку фільму */}
-        {!error && (
-          <List>
-            {movies.map(movie => (
-              <ListItem key={movie.id}>
-                {/* додаємо посилання на сторінку фільму */}
-                <StyledLink
-                  to={`/movies/${movie.id}`}
-                  state={{ from: location }}
-                >
-                  {movie.title}
-                </StyledLink>
-              </ListItem>
-            ))}
-          </List>
-        )}
+        {movies.length > 0 && <MovieList movies={movies} />}
         {isLoading && <LoadingIndicator />}
         {error && <h2>Sorry we didn't find this page</h2>}
       </StyledSection>
