@@ -11,15 +11,21 @@ const MovieDelails = () => {
   const { movieId } = useParams();
   const location = useLocation();
   const [selectedMovie, setSelectedMovie] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   // додаємо запит на фільм
   useEffect(() => {
     const fetchSelectedMovie = async movieId => {
       try {
+        setError(false);
+        setIsLoading(true);
         const movieData = await fetchMovieById(movieId);
         setSelectedMovie(movieData);
       } catch (error) {
-        console.log(error);
+        setError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -38,9 +44,10 @@ const MovieDelails = () => {
             Go back
           </Button>
         </Link>
-        <MovieCard movie={selectedMovie} />{' '}
-        {/* додаємо компонент для відображення фільму */}
-        {/* додаємо відкладений рендеринг дочірніх компонентів */}
+        {!error && <MovieCard movie={selectedMovie} />}
+        {isLoading && <LoadingIndicator />}
+        {error && <h2>Sorry we didn't find this page</h2>}
+
         <Suspense fallback={<LoadingIndicator />}>
           <Outlet />
         </Suspense>
