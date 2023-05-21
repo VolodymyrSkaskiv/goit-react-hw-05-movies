@@ -27,15 +27,9 @@ const HomePage = () => {
 
   return (
     <>
-      {isLoading ? (
-        <LoadingIndicator />
-      ) : error ? (
-        <p>
-          Sorry, we could not fetch the trending movies. Please try again later.
-        </p>
-      ) : (
-        <MovieList trendingMovies={trendingMovies} />
-      )}
+      {!error && <MovieList trendingMovies={trendingMovies} />}
+      {isLoading && <LoadingIndicator />}
+      {error && <h2>Sorry we didn't find this page</h2>}
     </>
   );
 };
