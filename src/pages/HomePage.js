@@ -11,7 +11,6 @@ const HomePage = () => {
   useEffect(() => {
     const fetchTrendingMovies = async () => {
       try {
-        setError(false);
         setIsLoading(true);
         const { results } = await fetchTrendMovies();
         setTrendingMovies(results);

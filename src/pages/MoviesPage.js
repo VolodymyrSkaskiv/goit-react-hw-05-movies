@@ -3,6 +3,8 @@ import { useSearchParams, useLocation } from 'react-router-dom'; // додаєм
 import { toast } from 'react-hot-toast'; // імпортуємо плагін для сповіщень
 import { fetchMovieByName } from '../services/api';
 import SearchMovies from '../components/SearchMovies/SearchMovies';
+import { LoadingIndicator } from 'components/SharedLayout/LoadingDots';
+
 import {
   List,
   ListItem,
@@ -12,6 +14,8 @@ import {
 } from '../components/MovieList/MovieList.styled'; // імпортуємо стилі
 
 const MoviesPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
@@ -24,6 +28,7 @@ const MoviesPage = () => {
     // додаємо сповіщення про пошук
     const getMovie = async () => {
       try {
+        setIsLoading(true);
         const { results } = await fetchMovieByName(query);
 
         // додаємо сповіщення, якщо фільмів не знайдено
@@ -35,8 +40,11 @@ const MoviesPage = () => {
           setMovies(results); // записуємо масив фільмів
         }
       } catch (error) {
+        setError(true);
         toast.error(error.message);
         setMovies([]);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -53,18 +61,25 @@ const MoviesPage = () => {
     <main>
       <StyledSection>
         <SectionTitle>Movies Page</SectionTitle>
-        <SearchMovies onSubmit={handleSubmit} />{' '}
+        <SearchMovies onSubmit={handleSubmit} />
         {/* додаємо компонент для пошуку фільму */}
-        <List>
-          {movies.map(movie => (
-            <ListItem key={movie.id}>
-              {/* додаємо посилання на сторінку фільму */}
-              <StyledLink to={`/movies/${movie.id}`} state={{ from: location }}>
-                {movie.title}
-              </StyledLink>
-            </ListItem>
-          ))}
-        </List>
+        {!error && (
+          <List>
+            {movies.map(movie => (
+              <ListItem key={movie.id}>
+                {/* додаємо посилання на сторінку фільму */}
+                <StyledLink
+                  to={`/movies/${movie.id}`}
+                  state={{ from: location }}
+                >
+                  {movie.title}
+                </StyledLink>
+              </ListItem>
+            ))}
+          </List>
+        )}
+        {isLoading && <LoadingIndicator />}
+        {error && <h2>Sorry we didn't find this page</h2>}
       </StyledSection>
     </main>
   );

@@ -18,7 +18,6 @@ const MovieDelails = () => {
   useEffect(() => {
     const fetchSelectedMovie = async movieId => {
       try {
-        setError(false);
         setIsLoading(true);
         const movieData = await fetchMovieById(movieId);
         setSelectedMovie(movieData);
