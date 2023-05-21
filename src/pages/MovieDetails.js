@@ -11,7 +11,7 @@ const MovieDelails = () => {
   const { movieId } = useParams();
   const location = useLocation();
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   // додаємо запит на фільм
